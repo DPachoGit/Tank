@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-user
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:27017
+    volumes:
+      - ./data/mongo:/data/db
+    networks:
+      - db-tank
+  backend:
+    build: ./backend
+    container_name: tank-container
+    restart: always
+    environment:
+      - VIRTUAL_HOST=api-tankgame.david-pacho.com
+      - LETSENCRYPT_HOST=api-tankgame.david-pacho.com
+      - LETSENCRYPT_EMAIL=davidpacho@gmail.com
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - db-tank
+      - nginx-proxy
+networks:
+  nginx-proxy:
+    name: nginx-proxy
+    external: true
+  db-tank:
+    name: db-tank
+    external: true

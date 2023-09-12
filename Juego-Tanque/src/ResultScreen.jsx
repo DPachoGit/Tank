@@ -15,9 +15,9 @@ export default function ResultScreen({ onRestart, username, successfulClicks, fa
   }, []);
 
   useEffect(() => {
-    const registerUrl = "http://localhost:3333/register";
-    const getUserUrl = "http://localhost:3333/getUser";
-    const getUsersUrl = "http://localhost:3333/getUsers";
+    const registerUrl = "https://api-tankgame.david-pacho.com/register";
+    const getUserUrl = "https://api-tankgame.david-pacho.com/getUser";
+    const getUsersUrl = "https://api-tankgame.david-pacho.com/getUsers";
 
     const registerData = {
       user: username,
