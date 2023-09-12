@@ -12,15 +12,30 @@ services:
       - ./data/mongo:/data/db
     networks:
       - db-tank
+  nginx:
+    image: nginx:latest
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=tankgame.david-pacho.com
+      - LETSENCRYPT_HOST=tankgame.david-pacho.com
+      - LETSENCRYPT_EMAIL=davidpacho@gmail.com
+    volumes:
+      - ./frontEnd:/usr/share/nginx/html:ro
+      ##En caso de que tenga rutass variables o se quiera configurar nginx##
+      #- ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - proxy
+    restart: unless-stopped
   backend:
-    build: ./backend
+    build: ./backEnd
     container_name: tank-container
     restart: always
     environment:
       - VIRTUAL_HOST=api-tankgame.david-pacho.com
       - LETSENCRYPT_HOST=api-tankgame.david-pacho.com
       - LETSENCRYPT_EMAIL=davidpacho@gmail.com
-      - ./backend:/app
+      - ./backEnd:/app
       - /app/node_modules
     networks:
       - db-tank
